@@ -1,165 +1,195 @@
-import React, { useState } from "react";
+import { useState } from 'react';
+import { ChevronLeft } from 'lucide-react'; 
 
-const SelectDatePage: React.FC = () => {
+import kayakImage from 'figma:asset/25e22556cd46a6ad6ac7d779147b48cf1c2a50aa.png';
+
+const dates = [
+  { day: 'Oct 23', available: true },
+  { day: 'Oct 23', available: false },
+  { day: 'Oct 24', available: false },
+  { day: 'Oct 25', available: false },
+  { day: 'Oct 26', available: false },
+];
+
+const times = [
+  { time: '07:00 am', label: '1 left' },
+  { time: '9:00 am', label: '2 left' },
+  { time: '11:00 am', label: '3 left' },
+  { time: '1:00 pm', label: 'sold out' },
+];
+
+export default function App() {
+  const [selectedDate, setSelectedDate] = useState(0);
+  const [selectedTime, setSelectedTime] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const price = 999;
-  const tax = 5;
-  const total = price * quantity + tax;
 
-  const handleIncrease = () => setQuantity(quantity + 1);
-  const handleDecrease = () => quantity > 1 && setQuantity(quantity - 1);
-
-  const dates = ["Oct 22", "Oct 23", "Oct 24", "Oct 25", "Oct 26"];
-  const times = [
-    { time: "07:00 am", left: "4 left" },
-    { time: "09:30 am", left: "3 left" },
-    { time: "11:00 am", left: "5 left" },
-    { time: "03:00 pm", left: "3 left" },
-    { time: "05:00 pm", left: "Sold out" },
-  ];
+  const basePrice = 999;
+  const subtotal = basePrice * quantity;
+  const taxes = 1;
+  const total = 958;
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      {/* NAVBAR */}
-      <nav className="flex justify-between items-center px-8 py-3 bg-white shadow-sm border-b">
-        <img
-          src="https://highwaydelite.com/assets/img/logo.png"
-          alt="logo"
-          className="h-6"
-        />
-        <div className="flex items-center space-x-2">
-          <input
-            type="text"
-            placeholder="Search experiences"
-            className="border border-gray-300 rounded-md px-3 py-1 w-72 text-sm focus:outline-none"
-          />
-          <button className="bg-yellow-400 hover:bg-yellow-500 text-sm px-3 py-1 rounded-md font-semibold">
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b px-4 py-3 sm:px-8">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center">
+              <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 0C3.58 0 0 3.58 0 8C0 13.54 8 20 8 20C8 20 16 13.54 16 8C16 3.58 12.42 0 8 0ZM8 11C6.34 11 5 9.66 5 8C5 6.34 6.34 5 8 5C9.66 5 11 6.34 11 8C11 9.66 9.66 11 8 11Z" fill="white"/>
+              </svg>
+            </div>
+            <span className="text-gray-900">Highway ticket</span>
+          </div>
+          <Button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900">
             Search
-          </button>
+          </Button>
         </div>
-      </nav>
+      </header>
 
-      {/* MAIN CONTENT */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 py-10">
-        {/* LEFT CONTENT */}
-        <div className="lg:col-span-2">
-          <img
-            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80"
-            alt="Kayaking"
-            className="rounded-xl w-full h-80 object-cover shadow-sm"
-          />
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-8">
+        {/* Back Button */}
+        <button className="flex items-center gap-1 text-gray-700 mb-4 hover:text-gray-900">
+          <ChevronLeft className="w-5 h-5" />
+          <span>Details</span>
+        </button>
 
-          <h2 className="text-2xl font-semibold mt-6 mb-1">Kayaking</h2>
-          <p className="text-sm text-gray-700 border border-gray-200 p-3 rounded-md mb-6">
-            Curated small-group experience. Certified guide. Safety first with
-            gear included. Helmet and Life jackets along with an expert will
-            accompany in kayaking.
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-[1fr,320px] gap-6">
+          {/* Left Column */}
+          <div className="space-y-6">
+            {/* Image */}
+            <div className="rounded-lg overflow-hidden">
+              <img 
+                src={kayakImage} 
+                alt="Kayaking through mangrove forest" 
+                className="w-full h-auto object-cover"
+              />
+            </div>
 
-          {/* Choose date */}
-          <div className="mb-6">
-            <h3 className="font-semibold mb-2 text-gray-800">Choose date</h3>
-            <div className="flex flex-wrap gap-2">
-              {dates.map((d, i) => (
-                <button
-                  key={i}
-                  className={`px-4 py-2 text-sm rounded-md border transition ${
-                    i === 0
-                      ? "bg-yellow-200 border-yellow-400 font-medium"
-                      : "border-gray-300 bg-white hover:bg-gray-100"
-                  }`}
-                >
-                  {d}
-                </button>
-              ))}
+            {/* Title and Description */}
+            <div>
+              <h1 className="mb-2">Kayaking</h1>
+              <p className="text-gray-600 border border-blue-300 bg-blue-50 px-3 py-2 rounded text-sm">
+                Curated small-group experience. Certified guide. Safety first will gear included. Helmet and Life 
+                jackets along with an expert will accompany in kayaking.
+              </p>
+            </div>
+
+            {/* Choose Date */}
+            <div>
+              <h3 className="mb-3">Choose date</h3>
+              <div className="flex gap-2 flex-wrap">
+                {dates.map((date, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedDate(index)}
+                    disabled={!date.available}
+                    className={`px-4 py-2 rounded border text-sm transition-colors ${
+                      selectedDate === index && date.available
+                        ? 'bg-yellow-400 border-yellow-400 text-gray-900'
+                        : date.available
+                        ? 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
+                        : 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'
+                    }`}
+                  >
+                    {date.day}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Choose Time */}
+            <div>
+              <h3 className="mb-3">Choose time</h3>
+              <div className="flex gap-2 flex-wrap">
+                {times.map((timeSlot, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedTime(index)}
+                    disabled={timeSlot.label === 'sold out'}
+                    className={`px-4 py-2 rounded border text-sm transition-colors ${
+                      timeSlot.label === 'sold out'
+                        ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'
+                        : selectedTime === index
+                        ? 'bg-white border-gray-900 text-gray-900'
+                        : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
+                    }`}
+                  >
+                    <span>{timeSlot.time}</span>
+                    {timeSlot.label !== 'sold out' && (
+                      <span className="ml-2 text-red-500">{timeSlot.label}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+              <p className="text-gray-500 text-sm mt-2">
+                All time slots are in UTC (GMT +5:30)
+              </p>
+            </div>
+
+            {/* About */}
+            <div>
+              <h3 className="mb-2">About</h3>
+              <p className="text-gray-600 text-sm">
+                Shared routes, trained guides, and safety briefing. Minimum age 10.
+              </p>
             </div>
           </div>
 
-          {/* Choose time */}
-          <div className="mb-6">
-            <h3 className="font-semibold mb-2 text-gray-800">Choose time</h3>
-            <p className="text-xs text-gray-500 mb-3">
-              All dates in IST (GMT +5:30)
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {times.map((t, i) => (
-                <button
-                  key={i}
-                  disabled={t.left === "Sold out"}
-                  className={`px-4 py-2 text-sm rounded-md border flex flex-col items-center ${
-                    t.left === "Sold out"
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-white hover:bg-gray-100 border-gray-300"
-                  }`}
-                >
-                  <span>{t.time}</span>
-                  <span className="text-xs text-gray-400">{t.left}</span>
-                </button>
-              ))}
+          {/* Right Column - Pricing Card */}
+          <div className="md:sticky md:top-6 h-fit">
+            <div className="border-4 border-pink-400 rounded-lg p-4 bg-white">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Starts at</span>
+                  <span className="text-gray-900">₹{basePrice}</span>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Quantity</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-6 h-6 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50"
+                    >
+                      -
+                    </button>
+                    <span className="w-8 text-center">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-6 h-6 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Subtotal</span>
+                  <span className="text-gray-900">₹{subtotal}</span>
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Taxes</span>
+                  <span className="text-gray-900">₹{taxes}</span>
+                </div>
+
+                <div className="border-t pt-3 mt-3">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-gray-900">Total</span>
+                    <span className="text-gray-900">₹{total}</span>
+                  </div>
+
+                  <Button className="w-full bg-gray-300 hover:bg-gray-400 text-gray-900">
+                    Confirm
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* About section */}
-          <div className="mb-6">
-            <h3 className="font-semibold text-gray-800 mb-2">About</h3>
-            <p className="text-sm text-gray-600 border border-gray-200 rounded-md p-3">
-              Scenic routes, trained guides, and safety briefing. Minimum age:
-              10.
-            </p>
-          </div>
-        </div>
-
-        {/* RIGHT BOOKING SUMMARY */}
-        <div className="bg-white border border-gray-200 rounded-xl shadow-md p-5 h-fit sticky top-20">
-          <div className="flex justify-between text-sm text-gray-600 mb-2">
-            <span>Starts at</span>
-            <span className="font-medium text-black">₹{price}</span>
-          </div>
-
-          {/* Quantity selector */}
-          <div className="flex justify-between items-center text-sm text-gray-600 mb-3">
-            <span>Quantity</span>
-            <div className="flex items-center border rounded-md">
-              <button
-                onClick={handleDecrease}
-                className="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200"
-              >
-                -
-              </button>
-              <span className="px-4">{quantity}</span>
-              <button
-                onClick={handleIncrease}
-                className="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200"
-              >
-                +
-              </button>
-            </div>
-          </div>
-
-          <div className="flex justify-between text-sm text-gray-600 mb-1">
-            <span>Subtotal</span>
-            <span>₹{price * quantity}</span>
-          </div>
-
-          <div className="flex justify-between text-sm text-gray-600 mb-3">
-            <span>Taxes</span>
-            <span>₹{tax}</span>
-          </div>
-
-          <hr className="my-3" />
-
-          <div className="flex justify-between items-center text-base font-semibold text-gray-800 mb-4">
-            <span>Total</span>
-            <span>₹{total}</span>
-          </div>
-
-          <button className="w-full py-2 bg-gray-200 text-gray-600 rounded-md font-semibold cursor-not-allowed">
-            Confirm
-          </button>
         </div>
       </div>
     </div>
   );
-};
-
-export default SelectDatePage;
+}
